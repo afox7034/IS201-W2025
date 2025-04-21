@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Music</title>
+  <link rel="stylesheet" type="text/css" href="css/scratch.css">
+
+</head>
+<body>
+    <!-- Navigation -->
+<nav class="top-nav">
+    <a href="index.html">Home Page</a>
+    <a href="webapp.html">Vibely</a>
+</nav>
+
+  <div class="header-section">
+    <h1 id="top">My Favorite Thing: Music</h1>
+    <p>This is a page dedicated to my favorite concerts and artists!</p>
+  </div>
+  
+  <!-- Ordered list with an unordered list inside -->
+  <h2>Top Artists and Favorite Songs</h2>
+  <ol class="centered-list">
+    <li>COIN
+      <ul>
+        <li>Malibu 1992</li>
+        <li>Youuu</li>
+      </ul>
+    </li>
+    <li>Gracie Abrams
+      <ul>
+        <li>Packing It UP</li>
+        <li>Close To You</li>
+      </ul>
+    </li>
+    <li>Lizzy McAlpine
+      <ul>
+        <li>Ceilings</li>
+        <li>Spring Into Summer</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>Concerts I've Attended</h2>
+  <ul class="centered-list">
+    <li>COIN</li>
+    <li>LANY</li>
+    <li>Jake Scott</li>
+    <li>Hozier</li>
+    <li>Noah Kahan</li>
+  </ul>
+
+  <!-- Pictures -->
+  <div class="image-gallery">
+    <figure class="image-container">
+      <img src="assets/img/coinconcert.jpeg" alt="COIN" width="300">
+      <figcaption>COIN Concert</figcaption>
+    </figure>
+  
+    <figure class="image-container">
+      <img src="assets/img/jakescott.jpeg" alt="Jake Scott" width="300">
+      <figcaption>Jake Scott Concert</figcaption>
+    </figure>
+  
+    <figure class="image-container">
+      <img src="assets/img/hozier.jpeg" alt="Hozier Concert" width="300">
+      <figcaption>Me & Ash at the Hozier Concert</figcaption>
+    </figure>
+  </div>
+
+  <!-- Embedded YouTube video -->
+  <h2 id="video">COIN Lyric Video</h2>
+  <iframe width="560" height="315" src="https://www.youtube.com/watch?v=kv1wZPsvtuo" 
+    title="YouTube video player" frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen></iframe>
+
+    <!-- Ebedded Tableau Viz -->
+    <h2>Spotify Listening Trends</h2>
+    <h4 style="text-align: center;">*not my personal data*</h4>
+    <div class='tableauPlaceholder' id='viz1744947067329' style='position: relative'>
+      <noscript>
+        <a href='#'>
+          <img alt='My Spotify Listening History' 
+               src='https://public.tableau.com/static/images/Sp/SpotifyListeningHistory_16859605468160/WebDashboard/1_rss.png' 
+               style='border: none' />
+        </a>
+      </noscript>
+      <object class='tableauViz' style='display:none;'>
+        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+        <param name='embed_code_version' value='3' />
+        <param name='site_root' value='' />
+        <param name='name' value='SpotifyListeningHistory_16859605468160/WebDashboard' />
+        <param name='tabs' value='no' />
+        <param name='toolbar' value='yes' />
+        <param name='static_image' value='https://public.tableau.com/static/images/Sp/SpotifyListeningHistory_16859605468160/WebDashboard/1.png' />
+        <param name='animate_transition' value='yes' />
+        <param name='display_static_image' value='yes' />
+        <param name='display_spinner' value='yes' />
+        <param name='display_overlay' value='yes' />
+        <param name='display_count' value='yes' />
+        <param name='language' value='en-US' />
+      </object>
+    </div>
+    <script type='text/javascript'> 
+        var divElement = document.getElementById('viz1744947067329'); 
+        var vizElement = divElement.getElementsByTagName('object')[0]; 
+      
+        if ( divElement.offsetWidth > 800 ) {
+          vizElement.style.width = '100%';
+          vizElement.style.height = '700px';
+        } else if ( divElement.offsetWidth > 500 ) {
+          vizElement.style.width = '100%';
+          vizElement.style.height = '600px';
+        } else {
+          vizElement.style.width = '100%';
+          vizElement.style.height = '500px';
+        }
+      
+        var scriptElement = document.createElement('script'); 
+        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js'; 
+        vizElement.parentNode.insertBefore(scriptElement, vizElement); 
+      </script>
+
+  <!-- On page anchor -->
+  <p><a href="#top">Go to top</a></p>
+</body>
+</html>
+
+<div class="footer-section">
+    <p>&copy; 2025 My Music Page</p>
+  </div>

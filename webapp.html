@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vibely 🎶</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --tile-border: #ccc;
+      --correct: #a8d5ba;
+      --present: #f9d7a0;
+      --absent: #e0e0e0;
+      --text: #333;
+      --key: #dcd6f7;
+      --key-text: #333;
+      --key-border: #b0a8d6;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+
+    .board {
+      display: grid;
+      grid-template-rows: repeat(6, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+    }
+
+    .tile {
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--tile-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      background-color: #fff;
+      transition: background-color 0.3s ease;
+    }
+
+    .correct {
+      background-color: var(--correct);
+      border-color: var(--correct);
+      color: #fff;
+    }
+
+    .present {
+      background-color: var(--present);
+      border-color: var(--present);
+      color: #fff;
+    }
+
+    .absent {
+      background-color: var(--absent);
+      border-color: var(--absent);
+      color: #888;
+    }
+
+    .keyboard {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .keyboard-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .key {
+      padding: 10px 12px;
+      background-color: var(--key);
+      border: 1px solid var(--key-border);
+      border-radius: 6px;
+      font-weight: bold;
+      color: var(--key-text);
+      cursor: pointer;
+      text-transform: uppercase;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .key.wide {
+      min-width: 60px;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 480px) {
+      .tile {
+        width: 45px;
+        height: 45px;
+        font-size: 1.5rem;
+      }
+
+      .key {
+        min-width: 32px;
+        padding: 8px 10px;
+      }
+
+      .key.wide {
+        min-width: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Vibely 🎶</h1>
+  <div class="board" id="board"></div>
+  <div class="keyboard" id="keyboard"></div>
+  <div id="message"></div>
+
+  <script>
+    const words = [
+      "SCALE", "NOTES", "LYRIC", "TREMO", "DRUMS", "BASSY", "FLUTE", "HUMMM", "PIANO", "SONGS",
+      "TEMPO", "RHYTH", "VOCAL", "TUNED", "SYNTH", "BEATS", "GUITA", "CHORD", "INTRO", "BRIDG"
+    ];
+    const solution = words[Math.floor(Math.random() * words.length)];
+    let currentRow = 0;
+    let currentGuess = "";
+    const maxAttempts = 6;
+
+    const board = document.getElementById("board");
+    const message = document.getElementById("message");
+    const keyboard = document.getElementById("keyboard");
+
+    for (let i = 0; i < maxAttempts; i++) {
+      const row = document.createElement("div");
+      row.className = "row";
+      for (let j = 0; j < 5; j++) {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        row.appendChild(tile);
+      }
+      board.appendChild(row);
+    }
+
+    const layout = [
+      ["Q","W","E","R","T","Y","U","I","O","P"],
+      ["A","S","D","F","G","H","J","K","L"],
+      ["ENTER","Z","X","C","V","B","N","M","BACK"]
+    ];
+
+    layout.forEach(row => {
+      const rowDiv = document.createElement("div");
+      rowDiv.className = "keyboard-row";
+      row.forEach(k => {
+        const key = document.createElement("button");
+        key.textContent = k === "BACK" ? "⌫" : k;
+        key.className = "key" + (k === "ENTER" || k === "BACK" ? " wide" : "");
+        key.dataset.key = k;
+        rowDiv.appendChild(key);
+      });
+      keyboard.appendChild(rowDiv);
+    });
+
+    keyboard.addEventListener("click", (e) => {
+      if (e.target.matches(".key")) {
+        handleKey(e.target.dataset.key);
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      let key = e.key.toUpperCase();
+      if (key === "BACKSPACE") key = "BACK";
+      if (key === "ENTER" || /^[A-Z]$/.test(key)) {
+        handleKey(key);
+      }
+    });
+
+    function handleKey(key) {
+      if (message.textContent !== "") return;
+
+      if (key === "BACK" && currentGuess.length > 0) {
+        currentGuess = currentGuess.slice(0, -1);
+        updateTiles();
+      } else if (/^[A-Z]$/.test(key) && currentGuess.length < 5) {
+        currentGuess += key;
+        updateTiles();
+      } else if (key === "ENTER" && currentGuess.length === 5) {
+        checkGuess();
+      }
+    }
+
+    function updateTiles() {
+      const rowTiles = board.children[currentRow].children;
+      for (let i = 0; i < 5; i++) {
+        rowTiles[i].textContent = currentGuess[i] || "";
+      }
+    }
+
+    function checkGuess() {
+      const rowTiles = board.children[currentRow].children;
+      const guess = currentGuess;
+      const solutionArray = solution.split("");
+      const result = Array(5).fill("absent");
+
+      for (let i = 0; i < 5; i++) {
+        if (guess[i] === solution[i]) {
+          result[i] = "correct";
+          solutionArray[i] = null;
+        }
+      }
+
+      for (let i = 0; i < 5; i++) {
+        if (result[i] === "correct") continue;
+        const index = solutionArray.indexOf(guess[i]);
+        if (index !== -1) {
+          result[i] = "present";
+          solutionArray[index] = null;
+        }
+      }
+
+      for (let i = 0; i < 5; i++) {
+        rowTiles[i].classList.add(result[i]);
+
+        const keyBtn = document.querySelector(`.key[data-key="${guess[i]}"]`);
+        if (keyBtn && !keyBtn.classList.contains("correct")) {
+          if (result[i] === "correct") keyBtn.className = "key correct";
+          else if (result[i] === "present" && !keyBtn.classList.contains("present")) keyBtn.className = "key present";
+          else if (result[i] === "absent") keyBtn.className = "key absent";
+        }
+      }
+
+      if (guess === solution) {
+        message.textContent = "🎉 You nailed it!";
+        endGame();
+      } else if (currentRow === maxAttempts - 1) {
+        message.textContent = `🎶 Game over! The word was ${solution}`;
+        endGame();
+      } else {
+        currentRow++;
+        currentGuess = "";
+      }
+    }
+
+    function endGame() {
+      document.removeEventListener("keydown", handleKey);
+      keyboard.removeEventListener("click", handleKey);
+    }
+  </script>
+</body>
+</html>
